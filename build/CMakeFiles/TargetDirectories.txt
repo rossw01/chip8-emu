@@ -1,3 +1,0 @@
-/home/ross/code/cpp/chip8-emu/build/CMakeFiles/chip8-emu.dir
-/home/ross/code/cpp/chip8-emu/build/CMakeFiles/edit_cache.dir
-/home/ross/code/cpp/chip8-emu/build/CMakeFiles/rebuild_cache.dir
