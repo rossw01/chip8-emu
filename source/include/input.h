@@ -9,7 +9,7 @@ public:
   ~Input();
 
 private:
-  uint8_t _keypad[16]; 
+  uint8_t _keypad[16]{0}; 
 };
 
 #endif // !INPUT_H

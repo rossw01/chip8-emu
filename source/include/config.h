@@ -3,7 +3,7 @@
 
 struct Config {
   const unsigned int romStartAddress;
-  // Config(unsigned int start)
+  const unsigned int fontStartAddress;
 };
 
 #endif // !CONFIG_H

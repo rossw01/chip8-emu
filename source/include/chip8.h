@@ -1,13 +1,13 @@
 #ifndef CHIP8_H
 #define CHIP8_H
 
-#include "string"
 #include "cpu.h"
 #include "memory.h"
 #include "input.h"
 #include "display.h"
 
-const unsigned int ROM_START_ADDRESS = 0x200; // 512 bytes offset
+const unsigned int FONT_START_ADDRESS = 0x50; // 80 byte offset
+const unsigned int ROM_START_ADDRESS = 0x200; // 512 byte offset
 
 class Chip8 {
 public:

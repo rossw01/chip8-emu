@@ -1,10 +1,17 @@
-#include "memory.h";
+#include "memory.h"
+#include "chip8.h"
+#include "font.h"
 #include "fstream"
 #include "iostream"
-#include <stdexcept>
+#include <cstring>
+#include <iomanip>
+#include <ostream>
+#include <sstream>
 #include <string>
 
 Memory::Memory(const Config &config) : _config(config) {}
+
+Memory::~Memory() {}
 
 void Memory::LoadROM(std::string filename) {
   std::ifstream file(filename, std::ios::binary | std::ios::ate);
@@ -33,3 +40,45 @@ void Memory::LoadROM(std::string filename) {
     delete[] buffer;
   }
 };
+
+void Memory::LoadFont(FontName fontName) {
+  Font font(fontName); 
+
+  const uint8_t* fontDataPtr = font.GetBytes();
+  std::memcpy(&this->_memory[FONT_START_ADDRESS], fontDataPtr, FontData::FONT_SIZE);
+}
+
+void Memory::DumpMemory() {
+  const int bytesPerLine = 16; // Number of bytes per line in the dump
+
+  std::cout << "Dumping " << sizeof(_memory) << " bytes..." << std::endl;
+  std::ostringstream out;
+  for (int address = 0; address < sizeof(_memory); address += bytesPerLine) {
+    out << "| " << std::hex << std::setw(4) << std::setfill('0') << address << " | ";
+
+    for (size_t byte = 0; byte < bytesPerLine; byte++) {
+      if (address + byte < sizeof(_memory)) {
+        out << std::setw(2) << std::setfill('0') << static_cast<int>(_memory[address + byte]) << ' ';
+      } else {
+        out << "   ";
+      }
+    }
+
+    // ASCII
+    out << "| ";
+    for (int byte = 0; byte < bytesPerLine; byte++) {
+      if (address + byte < sizeof(_memory)) {
+        char c = _memory[address + byte];
+        if (std::isprint(c)) {
+          out << c;
+        } else {
+              out << '.'; // Non printable
+        }
+      }
+    }
+    out << " |" << std::endl;
+  }
+
+
+  std::cout << out.str();
+}
