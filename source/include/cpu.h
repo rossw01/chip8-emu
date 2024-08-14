@@ -6,12 +6,15 @@
 #include "display.h"
 #include "input.h"
 
+
 class Cpu {
 public:
   Cpu(Config *config, Display *display, Input *input, Memory *memory);
   ~Cpu();
 
+  void Cycle();
   void Reset();
+
   void OP_00E0(); // CLS
   void OP_00EE(); // RET
   void OP_1nnn(); // JP addr
@@ -37,6 +40,7 @@ public:
   void OP_Dxyn(); // DRW Vx, Vy, nibble
   void OP_Ex9E(); // SKP Vx
   void OP_ExA1(); // SKNP Vx
+
   void OP_Fx07(); // LD Vx, DT
   void OP_Fx0A(); // LD Vx, K
   void OP_Fx15(); // LD DT, Vx
@@ -47,7 +51,23 @@ public:
   void OP_Fx55(); // LD [I], Vx
   void OP_Fx65(); // LD Vx, [I]
 
+  // Function pointer subtables
+  void Table0();
+  void Table8();
+  void TableE();
+  void TableF();
+  void Void();
+
 private:
+
+  using Instruction = void (Cpu::*)();
+
+  Instruction _table[0xF + 1];
+  Instruction _table0[0xE + 1]; // Subtable for opcodes starting with 0x0
+  Instruction _table8[0xE + 1]; // Subtable for opcodes starting with 0x8
+  Instruction _tableE[0xE + 1]; // Subtable for opcodes starting with 0xE
+  Instruction _tableF[0x65 + 1]; // Subtable for opcodes starting with 0xF
+
   uint16_t _opcode;
   uint8_t _registers[16]{0};
   uint16_t _index{}; // 16bit index register

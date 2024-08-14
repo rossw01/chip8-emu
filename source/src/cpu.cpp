@@ -5,14 +5,104 @@
 #include <cstdint>
 #include <random>
 
+
 Cpu::Cpu(Config *config, Display *display, Input *input, Memory *memory) : 
-  _config(config), _display(display), _input(input), _memory(memory) {}
+  _config(config), _display(display), _input(input), _memory(memory) {
+  this->_table[0x0] = &Cpu::Table0;
+  this->_table[0x1] = &Cpu::OP_1nnn;
+  this->_table[0x2] = &Cpu::OP_2nnn;
+  this->_table[0x3] = &Cpu::OP_3xkk;
+  this->_table[0x4] = &Cpu::OP_4xkk;
+  this->_table[0x5] = &Cpu::OP_5xy0;
+  this->_table[0x6] = &Cpu::OP_6xkk;
+  this->_table[0x7] = &Cpu::OP_7xkk;
+  this->_table[0x8] = &Cpu::Table8;
+  this->_table[0x9] = &Cpu::OP_9xy0;
+  this->_table[0xA] = &Cpu::OP_Annn;
+  this->_table[0xB] = &Cpu::OP_Bnnn;
+  this->_table[0xC] = &Cpu::OP_Cxkk;
+  this->_table[0xD] = &Cpu::OP_Dxyn;
+  this->_table[0xE] = &Cpu::TableE;
+  this->_table[0xF] = &Cpu::TableF;
+
+  // Populate function ptr subtables
+  for (size_t i = 0; i < 0xE; i++) {
+    this->_table0[i] = &Cpu::Void;
+    this->_table8[i] = &Cpu::Void;
+    this->_tableE[i] = &Cpu::Void;
+  }
+  for (size_t i = 0; i < 0x65; i++) {
+    this->_tableF[i] = &Cpu::Void;
+  }
+
+  this->_table0[0x0] = &Cpu::OP_00E0;
+  this->_table0[0xE] = &Cpu::OP_00EE;
+
+  this->_table8[0x0] = &Cpu::OP_8xy0;
+  this->_table8[0x1] = &Cpu::OP_8xy1;
+  this->_table8[0x2] = &Cpu::OP_8xy2;
+  this->_table8[0x3] = &Cpu::OP_8xy3;
+  this->_table8[0x4] = &Cpu::OP_8xy4;
+  this->_table8[0x5] = &Cpu::OP_8xy5;
+  this->_table8[0x6] = &Cpu::OP_8xy6;
+  this->_table8[0x7] = &Cpu::OP_8xy7;
+  this->_table8[0xE] = &Cpu::OP_8xyE;
+
+  this->_tableE[0xE] = &Cpu::OP_Ex9E;
+  this->_tableE[0x1] = &Cpu::OP_ExA1;
+
+  this->_tableF[0x07] = &Cpu::OP_Fx07;
+  this->_tableF[0x0A] = &Cpu::OP_Fx0A;
+  this->_tableF[0x15] = &Cpu::OP_Fx15;
+  this->_tableF[0x18] = &Cpu::OP_Fx18;
+  this->_tableF[0x1E] = &Cpu::OP_Fx1E;
+  this->_tableF[0x29] = &Cpu::OP_Fx29;
+  this->_tableF[0x33] = &Cpu::OP_Fx33;
+  this->_tableF[0x55] = &Cpu::OP_Fx55;
+  this->_tableF[0x65] = &Cpu::OP_Fx65;
+}
 
 Cpu::~Cpu() {}
+
+
+void Cpu::Cycle() {
+  // Combines two bytes and combines them to make our 16 bit opcode
+  this->_opcode = this->_memory->GetByte(this->_programCounter) << 8 | 
+                  this->_memory->GetByte(this->_programCounter + 1);
+  this->_programCounter += 2;
+
+  ((*this).*(this->_table[(this->_opcode & 0xF000u) >> 12]))();
+
+  if (this->_delayTimer > 0) {
+    this->_delayTimer--;
+  }
+
+  if (this->_soundTimer > 0) {
+    this->_soundTimer--;
+  }
+}
 
 void Cpu::Reset() {
   this->_programCounter = this->_config->romStartAddress;
 }
+
+void Cpu::Table0() {
+  ((*this).*(_table0[this->_opcode & 0x000F]))(); // lol
+}
+
+void Cpu::Table8() {
+  ((*this).*(_table8[this->_opcode & 0x000F]))();
+}
+
+void Cpu::TableE() {
+  ((*this).*(_tableE[this->_opcode & 0x000F]))();
+}
+
+void Cpu::TableF() {
+  ((*this).*(_tableF[this->_opcode & 0x000F]))();
+}
+
+void Cpu::Void() {}
 
 void Cpu::OP_00E0() { // CLS
   this->_display->ClearScreen();
@@ -285,4 +375,8 @@ void Cpu::OP_Fx65() { // LD Vx, [I]
   for (uint8_t i = 0; i <= registerX; i++) {
     this->_registers[i] = this->_memory->GetByte(this->_index + i);
   }
+}
+
+void Cpu::Table0() {
+  ((*this).*(table0[this->_opcode & 0x000F]))();
 }

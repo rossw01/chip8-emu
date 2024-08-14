@@ -10,6 +10,7 @@ Chip8::Chip8() :
   this->_cpu.Reset();
   this->_memory.LoadFont(DEFAULT);
   this->_memory.DumpMemory();
+
 };
 
 Chip8::~Chip8() {};
