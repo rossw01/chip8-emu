@@ -8,6 +8,8 @@ public:
   Input();
   ~Input();
 
+  bool IsKeyDown(uint8_t index);
+
 private:
   uint8_t _keypad[16]{0}; 
 };

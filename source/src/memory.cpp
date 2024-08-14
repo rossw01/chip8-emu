@@ -9,7 +9,7 @@
 #include <sstream>
 #include <string>
 
-Memory::Memory(const Config &config) : _config(config) {}
+Memory::Memory(Config *config) : _config(config) {}
 
 Memory::~Memory() {}
 
@@ -25,7 +25,7 @@ void Memory::LoadROM(std::string filename) {
     file.close();
 
     // 0x200 - 0xFFF is used to store the instructions from loaded ROM.
-    if (size > (sizeof(this->_memory) - this->_config.romStartAddress)) {
+    if (size > (sizeof(this->_memory) - this->_config->romStartAddress)) {
       std::cout << "ROM size is too big and will not fit into memory. Aborting.." << std::endl;
       // Catch this later
       // learn.microsoft.com/en-us/cpp/cpp/errors-and-exception-handling-modern-cpp?view=msvc-170
@@ -34,7 +34,7 @@ void Memory::LoadROM(std::string filename) {
 
     // Make this long? Potential for errors
     for (int i = 0; i < size; i++) {
-      this->_memory[this->_config.romStartAddress + i] = buffer[i];
+      this->_memory[this->_config->romStartAddress + i] = buffer[i];
     }
 
     delete[] buffer;
@@ -46,6 +46,14 @@ void Memory::LoadFont(FontName fontName) {
 
   const uint8_t* fontDataPtr = font.GetBytes();
   std::memcpy(&this->_memory[FONT_START_ADDRESS], fontDataPtr, FontData::FONT_SIZE);
+}
+
+uint8_t Memory::GetByte(uint16_t memoryAddr) {
+  return this->_memory[memoryAddr];
+}
+
+void Memory::SetByte(uint16_t memoryAddr, uint8_t value) {
+  this->_memory[memoryAddr] = value;
 }
 
 void Memory::DumpMemory() {

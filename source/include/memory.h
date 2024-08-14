@@ -8,16 +8,18 @@
 
 class Memory {
 public:
-  Memory(const Config &config);
+  Memory(Config *config);
   ~Memory();
 
   void LoadROM(std::string filename);
   void LoadFont(FontName fontName);
+  uint8_t GetByte(uint16_t memoryAddr);
+  void SetByte(uint16_t memoryAddr, uint8_t value);
   void DumpMemory();
 
 private:
   uint8_t _memory[0x1000]{0}; // 4KiB
-  Config _config;
+  Config *_config;
 };
 
 #endif // !MEMORY_H
