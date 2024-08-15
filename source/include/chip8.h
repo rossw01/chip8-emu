@@ -19,11 +19,11 @@ public:
   Input* GetInput();
 
 private:
+  Config _config;
   Cpu _cpu;
   Memory _memory;
   Input _input;
   Display _display;
-  Config _config;
   Graphics _graphics;
 
 };

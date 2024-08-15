@@ -2,7 +2,7 @@
 #include "display.h"
 
 Chip8::Chip8(std::string romPath, int scale, int delay ) : 
-  _config{ FONT_START_ADDRESS, ROM_START_ADDRESS },
+  _config{ ROM_START_ADDRESS, FONT_START_ADDRESS },
   _graphics("Chip8-Emu", DISPLAY_WIDTH * scale, DISPLAY_HEIGHT * scale, DISPLAY_WIDTH, DISPLAY_HEIGHT),
   _input(),
   _memory(&this->_config),
@@ -11,8 +11,8 @@ Chip8::Chip8(std::string romPath, int scale, int delay ) :
 {
   this->_cpu.Reset();
   this->_memory.LoadROM(romPath);
-  this->_memory.LoadFont(DEFAULT);
-  this->_memory.DumpMemory();
+  // this->_memory.LoadFont(DEFAULT);
+  // this->_memory.DumpMemory();
 };
 
 Chip8::~Chip8() {};

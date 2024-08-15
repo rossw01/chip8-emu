@@ -15,7 +15,9 @@ Graphics::Graphics(std::string title, int winWidth, int winHeight, int textureWi
   );
 }
 
-Graphics::~Graphics() {
+Graphics::~Graphics() {}
+
+void Graphics::Quit() {
   SDL_DestroyTexture(this->_texture);
   SDL_DestroyRenderer(this->_renderer);
   SDL_DestroyWindow(this->_window);
