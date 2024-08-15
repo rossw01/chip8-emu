@@ -87,8 +87,8 @@ void Cpu::Reset() {
 }
 
 void Cpu::Table0() {
-  // (this->*this->_table0[this->_opcode & 0x000F])();
-  ((*this).*(this->_table0[this->_opcode & 0x000F]))(); // lol
+  (this->*_table0[this->_opcode & 0x000F])();
+  // ((*this).*(this->_table0[this->_opcode & 0x000F]))(); // lol
 }
 
 void Cpu::Table8() {
@@ -100,7 +100,9 @@ void Cpu::TableE() {
 }
 
 void Cpu::TableF() {
-  ((*this).*(this->_tableF[this->_opcode & 0x000F]))();
+  // never forget the hour spent trying to track down this bug. I used 0x000F 
+  // as the mask like I did with the other tables... big mistake...
+  ((*this).*(this->_tableF[this->_opcode & 0x00FF]))();
 }
 
 void Cpu::Void() {}
