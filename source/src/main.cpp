@@ -4,16 +4,17 @@
 #include <ostream>
 
 int main(int argc, char* argv[]) {
-  if (argc != 4) {
-    std::cerr << "Usage: " << argv[0] << " <Scale> <Delay (FPS)> <ROM Path>" << std::endl;
+  if (argc != 5) {
+    std::cerr << "Usage: " << argv[0] << " <Scale> <Delay (FPS)> <IsHeadless (1/0)> <ROM Path>" << std::endl;
     std::exit(EXIT_FAILURE);
   }
 
   int scale = std::stoi(argv[1]);
   int delay = std::stoi(argv[2]);
-  std::string romPath = argv[3];
+  bool isHeadless = std::stoi(argv[3]);
+  std::string romPath = argv[4];
   
-  Chip8 chip8(romPath, scale, delay);
+  Chip8 chip8(romPath, scale, delay, isHeadless);
 
   auto lastCycle = std::chrono::high_resolution_clock::now();
   bool quit = false;

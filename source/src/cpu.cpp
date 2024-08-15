@@ -3,8 +3,8 @@
 #include "display.h"
 #include "font.h"
 #include <cstdint>
+#include <iostream>
 #include <random>
-
 
 Cpu::Cpu(Config *config, Display *display, Input *input, Memory *memory) : 
   _config(config), _display(display), _input(input), _memory(memory) {
@@ -236,10 +236,9 @@ void Cpu::OP_8xy6() { // SHR Vx {, Vy}
 }
 
 
-void Cpu::OP_8xy7() { // SHR Vx {, Vy}
-  uint8_t registerX = (this->_opcode & 0x0F00) >> 8;
-  uint8_t registerY = (this->_opcode & 0x00F0) >> 4;
-
+void Cpu::OP_8xy7() { // SUBN Vx {, Vy}
+  uint8_t registerX = (this->_opcode & 0x0F00u) >> 8u;
+  uint8_t registerY = (this->_opcode & 0x00F0u) >> 4u;
   if (this->_registers[registerY] > this->_registers[registerX]) {
     this->_registers[0xF] = 1;
   } else {
@@ -255,7 +254,7 @@ void Cpu::OP_8xyE() { // SHL Vx {, Vy}
   uint8_t registerX = (this->_opcode & 0x0F00) >> 8;
 
   this->_registers[0xF] = (this->_registers[registerX] & 0b10000000) >> 7;
-  this->_registers[registerX] <<= 2;
+  this->_registers[registerX] <<= 1;
 }
 
 void Cpu::OP_9xy0() { // SNE Vx, Vy
@@ -374,6 +373,7 @@ void Cpu::OP_Fx55() { // LD [I], Vx
 void Cpu::OP_Fx65() { // LD Vx, [I]
   uint8_t registerX = (this->_opcode & 0x0F00) >> 8;
   for (uint8_t i = 0; i <= registerX; i++) {
+    std::cout << this->_memory->GetByte(this->_index + i) << std::endl;
     this->_registers[i] = this->_memory->GetByte(this->_index + i);
   }
 }

@@ -74,17 +74,24 @@ void Memory::DumpMemory() {
 
     // ASCII
     out << "| ";
-    for (int byte = 0; byte < bytesPerLine; byte++) {
-      if (address + byte < sizeof(_memory)) {
-        char c = _memory[address + byte];
-        if (std::isprint(c)) {
-          out << c;
-        } else {
-              out << '.'; // Non printable
-        }
-      }
+    // for (int byte = 0; byte < bytesPerLine; byte++) {
+    //   if (address + byte < sizeof(_memory)) {
+    //     char c = _memory[address + byte];
+    //     if (std::isprint(c)) {
+    //       out << c;
+    //     } else {
+    //           out << '.'; // Non printable
+    //     }
+    //   }
+    // }
+    // out << " |" << std::endl;
+    
+    if (address == ROM_START_ADDRESS) {
+      out << "ROM START";
+    } else if (address == FONT_START_ADDRESS) {
+      out << "FONT_START";
     }
-    out << " |" << std::endl;
+    out << std::endl;
   }
 
 
