@@ -31,3 +31,7 @@ bool Display::Draw(uint8_t posX, uint8_t posY, uint8_t spriteHeight, uint16_t in
   }
   return didErasePixel;
 }
+
+uint32_t* Display::GetScreen() {
+  return this->_screen;
+}

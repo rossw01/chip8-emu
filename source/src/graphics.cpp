@@ -4,14 +4,15 @@
 #include <SDL_render.h>
 #include <SDL_video.h>
 
-Graphics::Graphics() {
+Graphics::Graphics(std::string title, int winWidth, int winHeight, int textureWidth, int textureHeight) {
   SDL_Init(SDL_INIT_VIDEO);
   SDL_CreateWindowAndRenderer(
-    GraphicsConfig::WIN_WIDTH, GraphicsConfig::WIN_HEIGHT,
-    SDL_WINDOW_SHOWN, &this->_window, &this->_renderer
+    winWidth, winHeight, SDL_WINDOW_SHOWN, &this->_window, &this->_renderer
   );
-  // texture = SDL_CreateTexture(this->_renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, )
-
+  this->_texture = SDL_CreateTexture(
+    this->_renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING,
+    textureWidth, textureHeight
+  );
 }
 
 Graphics::~Graphics() {

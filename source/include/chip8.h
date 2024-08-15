@@ -12,8 +12,11 @@ const unsigned int ROM_START_ADDRESS = 0x200; // 512 byte offset
 
 class Chip8 {
 public:
-  Chip8();
+  Chip8(std::string romPath, int scale, int delay);
   ~Chip8();
+
+  bool Cycle();
+  Input* GetInput();
 
 private:
   Cpu _cpu;

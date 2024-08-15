@@ -15,6 +15,7 @@ public:
 
   void ClearScreen();
   bool Draw(uint8_t posX, uint8_t posY, uint8_t size, uint16_t index);
+  uint32_t* GetScreen();
 
 private:
   uint32_t _screen[DISPLAY_WIDTH * DISPLAY_HEIGHT]{0}; 
