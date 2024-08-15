@@ -295,7 +295,7 @@ void Cpu::OP_Dxyn() { // DRW Vx, Vy, nibble
 
   this->_registers[0xF] = (
     this->_display->Draw(
-      registerX % DISPLAY_WIDTH, registerY % DISPLAY_HEIGHT, 
+      this->_registers[registerX] % DISPLAY_WIDTH, this->_registers[registerY] % DISPLAY_HEIGHT, 
       spriteHeight, this->_index
     )
   );

@@ -34,7 +34,6 @@ void Memory::LoadROM(std::string filename) {
 
     // Make this long? Potential for errors
     for (int i = 0; i < size; i++) {
-      std::cout << "Writing to address: " << this->_config->romStartAddress + i << std::endl;
       this->_memory[this->_config->romStartAddress + i] = buffer[i];
     }
 

@@ -11,7 +11,7 @@ Chip8::Chip8(std::string romPath, int scale, int delay ) :
 {
   this->_cpu.Reset();
   this->_memory.LoadROM(romPath);
-  // this->_memory.LoadFont(DEFAULT);
+  this->_memory.LoadFont(DEFAULT);
   // this->_memory.DumpMemory();
 };
 
@@ -23,10 +23,10 @@ bool Chip8::Cycle() {
   
   if (this->_input.HandleInput()) {
     this->_graphics.Quit();
-    return false; // Quit signal
+    return true; // Quit signal
   }
 
-  return true;
+  return false;
 }
 
 Input* Chip8::GetInput() {

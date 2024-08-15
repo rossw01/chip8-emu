@@ -3,6 +3,7 @@
 #include <SDL_pixels.h>
 #include <SDL_render.h>
 #include <SDL_video.h>
+#include <iostream>
 
 Graphics::Graphics(std::string title, int winWidth, int winHeight, int textureWidth, int textureHeight) {
   SDL_Init(SDL_INIT_VIDEO);
