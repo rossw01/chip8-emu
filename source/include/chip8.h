@@ -2,6 +2,7 @@
 #define CHIP8_H
 
 #include "cpu.h"
+#include "graphics.h"
 #include "memory.h"
 #include "input.h"
 #include "display.h"
@@ -20,6 +21,7 @@ private:
   Input _input;
   Display _display;
   Config _config;
+  Graphics _graphics;
 
 };
 

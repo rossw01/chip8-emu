@@ -9,6 +9,7 @@ public:
   ~Input();
 
   bool IsKeyDown(uint8_t index);
+  bool HandleInput();
 
 private:
   uint8_t _keypad[16]{0}; 

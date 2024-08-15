@@ -87,19 +87,20 @@ void Cpu::Reset() {
 }
 
 void Cpu::Table0() {
-  ((*this).*(_table0[this->_opcode & 0x000F]))(); // lol
+  // (this->*this->_table0[this->_opcode & 0x000F])();
+  ((*this).*(this->_table0[this->_opcode & 0x000F]))(); // lol
 }
 
 void Cpu::Table8() {
-  ((*this).*(_table8[this->_opcode & 0x000F]))();
+  ((*this).*(this->_table8[this->_opcode & 0x000F]))();
 }
 
 void Cpu::TableE() {
-  ((*this).*(_tableE[this->_opcode & 0x000F]))();
+  ((*this).*(this->_tableE[this->_opcode & 0x000F]))();
 }
 
 void Cpu::TableF() {
-  ((*this).*(_tableF[this->_opcode & 0x000F]))();
+  ((*this).*(this->_tableF[this->_opcode & 0x000F]))();
 }
 
 void Cpu::Void() {}
@@ -375,8 +376,4 @@ void Cpu::OP_Fx65() { // LD Vx, [I]
   for (uint8_t i = 0; i <= registerX; i++) {
     this->_registers[i] = this->_memory->GetByte(this->_index + i);
   }
-}
-
-void Cpu::Table0() {
-  ((*this).*(table0[this->_opcode & 0x000F]))();
 }
