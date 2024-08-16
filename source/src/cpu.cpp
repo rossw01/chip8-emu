@@ -178,27 +178,21 @@ void Cpu::OP_8xy1() { // OR Vx, Vy
   uint8_t registerX = (this->_opcode & 0x0F00) >> 8;
   uint8_t registerY = (this->_opcode & 0x00F0) >> 4;
 
-  this->_registers[registerX] = (
-    this->_registers[registerX] | this->_registers[registerY]
-  );
+  this->_registers[registerX] |= this->_registers[registerY];
 }
 
 void Cpu::OP_8xy2() { // AND Vx, Vy
   uint8_t registerX = (this->_opcode & 0x0F00) >> 8;
   uint8_t registerY = (this->_opcode & 0x00F0) >> 4;
 
-  this->_registers[registerX] = (
-    this->_registers[registerX] & this->_registers[registerY]
-  );
+  this->_registers[registerX] &= this->_registers[registerY];
 }
 
 void Cpu::OP_8xy3() { // XOR Vx, Vy
   uint8_t registerX = (this->_opcode & 0x0F00) >> 8;
   uint8_t registerY = (this->_opcode & 0x00F0) >> 4;
 
-  this->_registers[registerX] = (
-    this->_registers[registerX] ^ this->_registers[registerY]
-  );
+  this->_registers[registerX] ^= this->_registers[registerY];
 }
 
 void Cpu::OP_8xy4() { // ADD Vx, Vy
@@ -207,29 +201,40 @@ void Cpu::OP_8xy4() { // ADD Vx, Vy
 
   uint16_t total = this->_registers[registerX] + this->_registers[registerY];
 
+  uint8_t newVf;
   if (total > 255) {
-    this->_registers[0xF] = 1;
+    newVf = 1;
   } else {
-    this->_registers[0xF] = 0;
+    newVf = 0;
   }
 
   this->_registers[registerX] = total & 0xFF; // Rollover
+  this->_registers[0xF] = newVf; // See explanation in OP_8xy5
 }
 
 void Cpu::OP_8xy5() { // SUB Vx, Vy
+  // The documentation for 8xy5 and 8xy7 on devernay.free.fr is just incorrect.
+  // You must subtract FIRST to allow for Vf to be able to be stored in Vx.
+  // Imagine Vx is Vf, you set Vx(Vf) to 1 or 0 to say if we rolled over to 255,
+  // then IMMEDIATELY overwrite it by subtracting Vy from it?? obviously fucking wrong.
+
   uint8_t registerX = (this->_opcode & 0x0F00) >> 8;
   uint8_t registerY = (this->_opcode & 0x00F0) >> 4;
 
+  uint16_t total = this->_registers[registerX] - this->_registers[registerY];
 
-  if (this->_registers[registerX] > this->_registers[registerY]) {
-    this->_registers[0xF] = 1;
+  uint8_t newVf;
+  if (this->_registers[registerX] >= this->_registers[registerY]) {
+    newVf = 1;
   } else {
-    this->_registers[0xF] = 0;
+    newVf = 0;
   }
 
-  this->_registers[registerX] -= this->_registers[registerY];
+  this->_registers[registerX] = total & 0xFF;
+  this->_registers[0xF] = newVf; 
 }
 
+// FIXME
 void Cpu::OP_8xy6() { // SHR Vx {, Vy}
   uint8_t registerX = (this->_opcode & 0x0F00) >> 8;
 
@@ -241,17 +246,21 @@ void Cpu::OP_8xy6() { // SHR Vx {, Vy}
 void Cpu::OP_8xy7() { // SUBN Vx {, Vy}
   uint8_t registerX = (this->_opcode & 0x0F00u) >> 8u;
   uint8_t registerY = (this->_opcode & 0x00F0u) >> 4u;
-  if (this->_registers[registerY] > this->_registers[registerX]) {
-    this->_registers[0xF] = 1;
+
+  uint16_t total = this->_registers[registerY] - this->_registers[registerX];
+
+  uint8_t newVf;
+  if (this->_registers[registerY] >= this->_registers[registerX]) {
+    newVf = 1;
   } else {
-    this->_registers[0xF] = 0;
+    newVf = 0;
   }
 
-  this->_registers[registerX] = (
-   this->_registers[registerY] - this->_registers[registerX]
-  );
+  this->_registers[registerX] = total; 
+  this->_registers[0xF] = newVf;
 }
 
+// FIXME
 void Cpu::OP_8xyE() { // SHL Vx {, Vy} 
   uint8_t registerX = (this->_opcode & 0x0F00) >> 8;
 
@@ -375,7 +384,6 @@ void Cpu::OP_Fx55() { // LD [I], Vx
 void Cpu::OP_Fx65() { // LD Vx, [I]
   uint8_t registerX = (this->_opcode & 0x0F00) >> 8;
   for (uint8_t i = 0; i <= registerX; i++) {
-    std::cout << this->_memory->GetByte(this->_index + i) << std::endl;
     this->_registers[i] = this->_memory->GetByte(this->_index + i);
   }
 }
