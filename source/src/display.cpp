@@ -9,7 +9,6 @@ void Display::ClearScreen() {
   std::memset(&this->_screen, 0, DISPLAY_WIDTH * DISPLAY_HEIGHT);
 }
 
-// If drawing has wrapped, return true
 bool Display::Draw(uint8_t posX, uint8_t posY, uint8_t spriteHeight, uint16_t index) {
   bool didErasePixel = false;
 
@@ -20,10 +19,11 @@ bool Display::Draw(uint8_t posX, uint8_t posY, uint8_t spriteHeight, uint16_t in
     for (int col = 0; col < 8; col++) {
       uint8_t spritePixel = spriteByte & (0b10000000 >> col);
       uint32_t* screenPixel = &this->_screen[((posY + row) * DISPLAY_WIDTH) + (posX + col)];
+
       if (!spritePixel) {
         continue;
       }
-      if (*screenPixel == 0xFFFFFFF) {
+      if (*screenPixel == 0xFFFFFFFF) {
         didErasePixel = true;
       }
       *screenPixel ^= 0xFFFFFFFF;

@@ -3,7 +3,6 @@
 #include "display.h"
 #include "font.h"
 #include <cstdint>
-#include <iostream>
 #include <random>
 
 Cpu::Cpu(Config *config, Display *display, Input *input, Memory *memory) : 
@@ -234,14 +233,13 @@ void Cpu::OP_8xy5() { // SUB Vx, Vy
   this->_registers[0xF] = newVf; 
 }
 
-// FIXME
 void Cpu::OP_8xy6() { // SHR Vx {, Vy}
   uint8_t registerX = (this->_opcode & 0x0F00) >> 8;
 
-  this->_registers[0xF] = this->_registers[registerX] & 0x1;
+  uint8_t tempVx = this->_registers[registerX];
   this->_registers[registerX] >>= 1;
+  this->_registers[0xF] = tempVx & 0x1;
 }
-
 
 void Cpu::OP_8xy7() { // SUBN Vx {, Vy}
   uint8_t registerX = (this->_opcode & 0x0F00u) >> 8u;
@@ -260,12 +258,12 @@ void Cpu::OP_8xy7() { // SUBN Vx {, Vy}
   this->_registers[0xF] = newVf;
 }
 
-// FIXME
 void Cpu::OP_8xyE() { // SHL Vx {, Vy} 
   uint8_t registerX = (this->_opcode & 0x0F00) >> 8;
 
-  this->_registers[0xF] = (this->_registers[registerX] & 0b10000000) >> 7;
+  uint8_t tempVx = this->_registers[registerX];
   this->_registers[registerX] <<= 1;
+  this->_registers[0xF] = (tempVx & 0b10000000) >> 7;
 }
 
 void Cpu::OP_9xy0() { // SNE Vx, Vy

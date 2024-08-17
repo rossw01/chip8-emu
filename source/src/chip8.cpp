@@ -16,7 +16,7 @@ Chip8::Chip8(std::string romPath, int scale, int delay, bool isHeadless):
   this->_cpu.Reset();
   this->_memory.LoadROM(romPath);
   this->_memory.LoadFont(DEFAULT);
-  this->_memory.DumpMemory();
+  // this->_memory.DumpMemory();
 };
 
 Chip8::~Chip8() {
