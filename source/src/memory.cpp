@@ -39,10 +39,6 @@ void Memory::LoadROM(std::string filename) {
 
     delete[] buffer;
   }
-
-  // DELETE THIS OR FEEL THE WRATH
-  this->_memory[0x1FF] = 1;
-
 };
 
 void Memory::LoadFont(FontName fontName) {
