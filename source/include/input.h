@@ -2,6 +2,8 @@
 #define INPUT_H
 
 #include "cstdint"
+#include <SDL_keycode.h>
+#include <unordered_map>
 
 class Input {
 public:
@@ -12,7 +14,9 @@ public:
   bool HandleInput();
 
 private:
-  uint8_t _keypad[16]{0}; 
+  static const std::unordered_map<SDL_Keycode, int> _keyMap;
+  bool _keys[16]{false};
+
 };
 
 #endif // !INPUT_H
