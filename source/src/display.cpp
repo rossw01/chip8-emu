@@ -6,7 +6,7 @@ Display::Display(Memory *memory): _memory(memory) { }
 Display::~Display() { }
 
 void Display::ClearScreen() {
-  std::memset(&this->_screen, 0, DISPLAY_WIDTH * DISPLAY_HEIGHT);
+  std::memset(&this->_screen, 0, sizeof(this->_screen));
 }
 
 bool Display::Draw(uint8_t posX, uint8_t posY, uint8_t spriteHeight, uint16_t index) {

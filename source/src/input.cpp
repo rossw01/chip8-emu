@@ -2,6 +2,9 @@
 #include <SDL_events.h>
 #include <SDL_keycode.h>
 
+#include <iostream>
+#include <ostream>
+
 Input::Input() {
 };
 
@@ -131,5 +134,6 @@ bool Input::HandleInput() {
         // hey man I tried to warn you
     }
   }
+  std::cout << "Quit: " << quit << std::endl;
   return quit;
 }

@@ -3,7 +3,6 @@
 #include <SDL_pixels.h>
 #include <SDL_render.h>
 #include <SDL_video.h>
-#include <iostream>
 
 Graphics::Graphics(std::string title, int winWidth, int winHeight, int textureWidth, int textureHeight) {
   SDL_Init(SDL_INIT_VIDEO);
@@ -31,4 +30,3 @@ void Graphics::Update(void* buffer, int pitch) {
   SDL_RenderCopy(this->_renderer, this->_texture, nullptr, nullptr);
   SDL_RenderPresent(this->_renderer);
 }
-
