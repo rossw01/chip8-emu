@@ -2,6 +2,7 @@
 #include <chrono>
 #include <iostream>
 #include <ostream>
+#include <thread>
 
 int main(int argc, char* argv[]) {
   if (argc != 5) {
@@ -19,14 +20,14 @@ int main(int argc, char* argv[]) {
   auto lastCycle = std::chrono::high_resolution_clock::now();
   bool quit = false;
 
-  while(!quit) {
+  while (!quit) {
     auto currTime = std::chrono::high_resolution_clock::now();
-		float dt = std::chrono::duration<float, std::chrono::milliseconds::period>(currTime - lastCycle).count();
+    float dt = std::chrono::duration<float, std::chrono::milliseconds::period>(currTime - lastCycle).count();
 
-    if (dt > delay) {
-      lastCycle = currTime;
-      quit = chip8.Cycle();
-    }
+    std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<int>(delay - dt)));
+
+    lastCycle = std::chrono::high_resolution_clock::now();
+    quit = chip8.Cycle();
   }
 
   return 0;
