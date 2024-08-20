@@ -4,9 +4,10 @@
 Chip8::Chip8(std::string romPath, int scale, int delay, bool isHeadless): 
   _config{ ROM_START_ADDRESS, FONT_START_ADDRESS },
   _input(),
+  _sound(),
   _memory(&this->_config),
   _display(&this->_memory),
-  _cpu(&this->_config, &this->_display, &this->_input, &this->_memory) 
+  _cpu(&this->_config, &this->_display, &this->_input, &this->_memory, &this->_sound) 
 {
 
   if (isHeadless == false) {

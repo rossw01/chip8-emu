@@ -6,6 +6,7 @@
 #include "memory.h"
 #include "input.h"
 #include "display.h"
+#include "sound.h"
 
 const unsigned int FONT_START_ADDRESS = 0x50; // 80 byte offset
 const unsigned int ROM_START_ADDRESS = 0x200; // 512 byte offset
@@ -21,6 +22,7 @@ public:
 private:
   Config _config;
   Cpu _cpu;
+  Sound _sound;
   Memory _memory;
   Input _input;
   Display _display;

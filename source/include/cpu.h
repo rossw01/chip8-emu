@@ -5,11 +5,12 @@
 #include "cstdint"
 #include "display.h"
 #include "input.h"
+#include "sound.h"
 
 
 class Cpu {
 public:
-  Cpu(Config *config, Display *display, Input *input, Memory *memory);
+  Cpu(Config *config, Display *display, Input *input, Memory *memory, Sound *sound);
   ~Cpu();
 
   void Cycle();
@@ -81,6 +82,7 @@ private:
   Config *_config;
   Input *_input;
   Memory *_memory;
+  Sound *_sound;
 };
 
 #endif // !CPU_H

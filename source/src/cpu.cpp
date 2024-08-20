@@ -5,8 +5,8 @@
 #include <cstdint>
 #include <random>
 
-Cpu::Cpu(Config *config, Display *display, Input *input, Memory *memory) : 
-  _config(config), _display(display), _input(input), _memory(memory) {
+Cpu::Cpu(Config *config, Display *display, Input *input, Memory *memory, Sound *sound) : 
+  _config(config), _display(display), _input(input), _memory(memory), _sound(sound) {
   this->_table[0x0] = &Cpu::Table0;
   this->_table[0x1] = &Cpu::OP_1nnn;
   this->_table[0x2] = &Cpu::OP_2nnn;
@@ -78,6 +78,9 @@ void Cpu::Cycle() {
 
   if (this->_soundTimer > 0) {
     this->_soundTimer--;
+    if (this->_soundTimer == 0) {
+      this->_sound->PlaySound();
+    }
   }
 }
 
