@@ -2,24 +2,24 @@
 
 This project emulates the functionality of the Chip8 using C++. Graphics and inputs are handled using SDL2.
 
-From [Wikipedia](https://en.wikipedia.org/wiki/CHIP-8): CHIP-8 is an interpreted programming language, developed by Joseph Weisbecker on his 1802 microprocessor. It was initially used on the COSMAC VIP and Telmac 1800, which were 8-bit microcomputers made in the mid-1970s. 
+From [Wikipedia](https://en.wikipedia.org/wiki/CHIP-8): CHIP-8 is an interpreted programming language, developed by Joseph Weisbecker on his 1802 microprocessor. It was initially used on the COSMAC VIP and Telmac 1800, which were 8-bit microcomputers made in the mid-1970s.
 
 ## Requirements
+
 - [SDL2](https://github.com/libsdl-org/SDL/releases/latest)
 
 ## Installation
-#### Build from source
-  - Clone the repo `git clone https://github.com/rossw01/chip8-emu.git`
-  - Create build directory and cd into it `cd chip8-emu && mkdir build && cd build`
-  - Build and run `cmake .. && make && ./chip8-emu 10 3 0 ../roms/{ROMNAME}`
+
+### Build from source
+
+- Clone the repo `git clone https://github.com/rossw01/chip8-emu.git`
+- Create build directory and cd into it `cd chip8-emu && mkdir build && cd build`
+- Build and run `cmake .. && make && chip8-emu /path/to/rom`
 
 ## Usage
-`Usage: ./chip8-emu <scale> <delay> <headless> <rom_path>`
 
-- `(int) scale` determines the sprite scale.
-- `(int) delay` determines the time between screen refreshes (lower = faster game speed).
-- `(bool) headless` determines whether the SDL2 functionality is initialised.
-- `(str) rom_path` determines the location of the ROM to be loaded.
+- `chip8-emu <ROM_PATH> [options]` launches the emulator.
+- `chip8-emu --help` outputs a list of all arguments you can use.
 
 <br />
 <p align="center">
@@ -42,4 +42,3 @@ From [Wikipedia](https://en.wikipedia.org/wiki/CHIP-8): CHIP-8 is an interpreted
 <p align="center">
     Demonstration of the built-in hex-viewer.
 </p>
-
