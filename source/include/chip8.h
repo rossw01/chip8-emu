@@ -17,7 +17,6 @@ public:
   ~Chip8();
 
   bool Cycle();
-  Input* GetInput();
 
 private:
   Config _config;
@@ -27,6 +26,7 @@ private:
   Input _input;
   Display _display;
   Graphics* _graphics;
+  bool _isHeadless;
 
 };
 

@@ -26,7 +26,7 @@ void Memory::LoadROM(std::string filename) {
 
     // 0x200 - 0xFFF is used to store the instructions from loaded ROM.
     if (size > (sizeof(this->_memory) - this->_config->romStartAddress)) {
-      std::cout << "ROM size is too big and will not fit into memory. Aborting.." << std::endl;
+      std::cerr << "ROM size is too big and will not fit into memory. Aborting.." << std::endl;
       // Catch this later
       // learn.microsoft.com/en-us/cpp/cpp/errors-and-exception-handling-modern-cpp?view=msvc-170
       throw std::invalid_argument("ROM Size cannot exceed 3584 bytes!");
@@ -93,7 +93,4 @@ void Memory::DumpMemory() {
     }
     out << std::endl;
   }
-
-
-  std::cout << out.str();
 }

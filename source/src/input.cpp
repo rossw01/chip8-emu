@@ -2,9 +2,6 @@
 #include <SDL_events.h>
 #include <SDL_keycode.h>
 
-#include <iostream>
-#include <ostream>
-
 const std::unordered_map<SDL_Keycode, int> Input::_keyMap = {
   {SDLK_1, 1}, {SDLK_2, 2}, {SDLK_3, 3}, {SDLK_4, 0xC},
   {SDLK_q, 4}, {SDLK_w, 5}, {SDLK_e, 6}, {SDLK_r, 0xD},
@@ -32,7 +29,6 @@ bool Input::HandleInput() { // Returning true value starts quit sequence
       if (it == this->_keyMap.end()) {
         return false;
       }
-      std::cout << it->first << " " << it->second << std::endl;
       this->_keys[it->second] = event.type == SDL_KEYDOWN ? true : false;
     }
   }
